@@ -1,0 +1,122 @@
+openapi: 3.0.3
+info:
+  description: microCMS OpenAPI specification
+  title: microCMS OpenAPI specification
+  version: '0.9'
+servers:
+  - description: prod
+    url: https://yorifuji-product1.microcms.io/api/v1/
+  - description: docker
+    url: http://localhost:8085/
+security:
+  - microCmsApiKey: []
+tags:
+  - description: ブログ
+    name: blogs
+paths:
+  /blogs:
+    get:
+      deprecated: false
+      description: ブログの一覧の取得
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Blogs'
+          description: OK
+      summary: ブログの一覧の取得
+      tags:
+        - blogs
+components:
+  schemas:
+    Blogs:
+      example:
+        offset: 0
+        contents:
+          - createdAt: 2022-12-31T06:52:45.431Z
+            publishedAt: 2022-12-31T06:52:45.431Z
+            id: xxxxx
+            title: キャーッ！のび太さんのエッチー！
+            content: <p>のび太さんのエッチー！</p>
+            updatedAt: 2022-12-31T06:52:45.431Z
+            revisedAt: 2022-12-31T06:52:45.431Z
+          - createdAt: 2022-12-31T06:52:45.431Z
+            publishedAt: 2022-12-31T06:52:45.431Z
+            id: yyyyy
+            title: キャーッ！のび太さんのグッチー！
+            content: <p>のび太さんのグッチー！</p>
+            updatedAt: 2022-12-31T06:52:45.431Z
+            revisedAt: 2022-12-31T06:52:45.431Z
+        limit: 10
+        totalCount: 1
+      properties:
+        contents:
+          items:
+            $ref: '#/components/schemas/Blog'
+          type: array
+        totalCount:
+          example: 1
+          type: integer
+        offset:
+          example: 0
+          type: integer
+        limit:
+          example: 10
+          type: integer
+      required:
+        - contents
+        - limit
+        - offset
+        - totalCount
+      type: object
+    Blog:
+      example:
+        createdAt: 2022-12-31T06:52:45.431Z
+        publishedAt: 2022-12-31T06:52:45.431Z
+        id: xxxxx
+        title: キャーッ！のび太さんのエッチー！
+        content: <p>のび太さんのエッチー！</p>
+        updatedAt: 2022-12-31T06:52:45.431Z
+        revisedAt: 2022-12-31T06:52:45.431Z
+      properties:
+        id:
+          example: xxxxx
+          type: string
+        createdAt:
+          example: 2022-12-31T06:52:45.431Z
+          format: date-time
+          type: string
+        updatedAt:
+          example: 2022-12-31T06:52:45.431Z
+          format: date-time
+          type: string
+        publishedAt:
+          example: 2022-12-31T06:52:45.431Z
+          format: date-time
+          type: string
+        revisedAt:
+          example: 2022-12-31T06:52:45.431Z
+          format: date-time
+          type: string
+        title:
+          example: キャーッ！のび太さんのエッチー！
+          type: string
+        content:
+          example: <p>のび太さんのエッチー！</p>
+          type: string
+      required:
+        - content
+        - createdAt
+        - id
+        - publishedAt
+        - revisedAt
+        - title
+        - updatedAt
+      type: object
+  securitySchemes:
+    microCmsApiKey:
+      description: microCMS API Key
+      type: apiKey
+      in: header
+      name: X-MICROCMS-API-KEY
